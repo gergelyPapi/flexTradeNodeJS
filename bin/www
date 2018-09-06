@@ -7,17 +7,34 @@
 var app = require('../app');
 var debug = require('debug')('nodeapp:server');
 var http = require('http');
+var logger = require('../modules/logger')
+var dbInteractor = require('../utils/db')
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '4747');
 app.set('port', port);
+
+logger.info("App is listening on port 4747 ....")
 
 /**
  * Create HTTP server.
  */
+
+var server = http.createServer(app);
+
+/**
+ * Create DB connection.
+*/
+dbInteractor.initDb(function (err) {
+      if (err) {
+          throw err;
+      }
+      logger.info("DB connection")
+    }
+);
 
 var server = http.createServer(app);
 
